@@ -1,5 +1,6 @@
 import os
 import platform
+import socket
 from pathlib import Path
 
 import psutil
@@ -19,7 +20,6 @@ class FenPrincipale(QMainWindow):
         self.setWindowIcon(QIcon('./coolmap.png'))
         self.resize(800, 800)
 
-
         #Création de GridLayout
         self.layout = QGridLayout(self.widget)
         self.widget.setLayout(self.layout)
@@ -28,6 +28,7 @@ class FenPrincipale(QMainWindow):
         self.layout.addWidget(self.label, 1, 0)
         # Création de champs texte multi lignes
         self.textEdit = QTextEdit(self.widget)
+        self.textEdit.setReadOnly(True)  # Désactivez la modification
         self.textEdit.setFixedWidth(700)
         self.layout.addWidget(self.textEdit, 2, 0, 1, 3)
 
@@ -78,7 +79,11 @@ class FenPrincipale(QMainWindow):
         print(f"Architecture du processeur        : {architecture}")
         processor_speed = platform.processor()
 
-        self.text = ("Système d'exploitation       : " + os.name.upper() +" " + platform.system() + " " + platform.release()+"\n"+
+        hostname = socket.gethostname()
+        # print(f"Nom d'hôte : {hostname}")
+
+        self.text = (f"Nom d'hôte                       : {hostname}" +"\n"
+                     "Système d'exploitation       : " + os.name.upper() +" " + platform.system() + " " + platform.release()+"\n"+
                      f"Type de système                : Système d’exploitation {architecture}" +"\n"
                      f"Processeur                         : {processor_name}" +"\n"
                      f"Vitesse du processeur        : {cpu_speed/1000:.2f} GHz" +"\n"
